@@ -5,13 +5,12 @@ using UnityEngine.InputSystem;
 
 public class PlayerScript : MonoBehaviour
 {
-
+  public GameObject wand;
 
   public float speed = 1f;
-
   private Vector2 inputDirection;
 
-
+  
 
   // Start is called before the first frame update
   void Start()
