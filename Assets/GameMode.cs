@@ -41,11 +41,11 @@ public class GameMode : MonoBehaviour
 
     }
 
-    public void UpdatePlayerScore() {
-        Debug.Log("Updated Player Score");
+    public void UpdatePlayerScore(float scoreIncrease) {
+        Debug.Log($"Updated Player Score by {scoreIncrease}");
     }
 
-    public void DealPlayerDamage(int damage) {
+    public void DealPlayerDamage(float damage) {
         Debug.Log($"Dealt {damage} damage to player");
     }
 }

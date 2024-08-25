@@ -13,9 +13,10 @@ public class RangedSingleEnemyController : MonoBehaviour
     public int RotateSpeed = 100;
     public int Range = 10;
     public int ProjectileSpeed = 1;
-    public int Damage = 10;
-    public int Health = 10;
+    public float Damage => 10 * GameMode.GlobalDifficulty;
+    public float Health => 10 * GameMode.GlobalDifficulty;
     public int ShotTimer = 2;
+    public float Value => 10 * GameMode.GlobalDifficulty;
 
     private void Awake() {
         gameObject.SetActive(false);
@@ -109,6 +110,17 @@ public class RangedSingleEnemyController : MonoBehaviour
             Vector3 direction = (player.transform.position - transform.position).normalized;
             float step = MoveSpeed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, player.transform.position, step);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.gameObject.tag == "playerProjectile") {
+            //TODO Reduce Projectile Count of Object
+            //Reduce Health by X amount
+            if(Health <= 0) {
+                GameMode.GM.UpdatePlayerScore(Value);
+                Destroy(gameObject);
+            }
         }
     }
 }

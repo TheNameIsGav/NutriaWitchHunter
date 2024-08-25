@@ -108,15 +108,13 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-
-
-
     //Populates Waiting Pools of Enemies
     void PopulateMeleeEnemies () {
 
         var spawnCount = (int)(EnemySpawnEquation() * 1.5);
         for (int i = 0; i < spawnCount; i++){
             var newEnemy = GameObject.Instantiate(MeleeEnemy);
+            newEnemy.transform.position = new Vector3(0, 0, -10);
             meleeWaitingPool.Push(newEnemy);
         }
     }
@@ -125,6 +123,7 @@ public class EnemySpawner : MonoBehaviour
         var spawnCount = (int)(EnemySpawnEquation() * 1.5);
         for (int i = 0; i < spawnCount; i++) {
             var newEnemy = GameObject.Instantiate(RangedEnemy);
+            newEnemy.transform.position = new Vector3(0, 0, -10);
             rangedWaitingPool.Push(newEnemy);
         }
     }

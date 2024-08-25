@@ -10,9 +10,10 @@ public class MeleeSingleEnemyController : MonoBehaviour
 
     private Camera mainCamera => GameMode.MainCamera;
 
-    public int MoveSpeed;
-    public int Damage;
-    public int Health;
+    public int MoveSpeed = 5;
+    public float Damage => 20 * GameMode.GlobalDifficulty;
+    public float Health => 40 * GameMode.GlobalDifficulty;
+    public float Value => 20 * GameMode.GlobalDifficulty/2;
 
 
     private void Awake() {
@@ -82,8 +83,13 @@ public class MeleeSingleEnemyController : MonoBehaviour
         
         //We were hit by a player's projectile so should die or lose health. 
         if(collision.gameObject.tag == "playerProjectile") {
-            GameMode.GM.UpdatePlayerScore();
-            Destroy(gameObject);
+
+            //Deal Damage to self based on projectile.
+            if(Health <= 0) {
+                GameMode.GM.UpdatePlayerScore(Value);
+                Destroy(gameObject);
+            }
+            
         }
     }
 }
