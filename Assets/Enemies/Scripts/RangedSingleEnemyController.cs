@@ -15,6 +15,7 @@ public class RangedSingleEnemyController : MonoBehaviour
     public int ProjectileSpeed = 1;
     public int Damage = 10;
     public int Health = 10;
+    public int ShotTimer = 2;
 
     private void Awake() {
         gameObject.SetActive(false);
@@ -30,6 +31,8 @@ public class RangedSingleEnemyController : MonoBehaviour
         FindSpawnPosition();
 
         _rotationDirection = Random.value > .5f ? 1 : -1;
+
+        InvokeRepeating("Shoot", 0, ShotTimer);
     }
 
     private int _rotationDirection;
@@ -70,6 +73,17 @@ public class RangedSingleEnemyController : MonoBehaviour
         } else {
             CirclePlayer();
             //MaintainDistance();
+        }
+
+    }
+
+    public GameObject Projectile;
+
+    void Shoot() {
+        //Fire Projectile at the player
+        if (Projectile != null) {
+            var newProj = GameObject.Instantiate(Projectile);
+            newProj.transform.position = transform.position;
         }
     }
 
