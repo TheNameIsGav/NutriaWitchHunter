@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Processors;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class PlayerScript : MonoBehaviour
 	private GameObject wand;
 
 	public GameObject Projectile;
+	public GameObject deathScreen;
 
 	[SerializeField]
 	private float _speed = 1f;
@@ -21,6 +23,7 @@ public class PlayerScript : MonoBehaviour
 	public int Damage = 10;
 	public int Health = 100;
 	public int AttackSpeed = 10;
+	public bool Dead = false;
 
 	// Start is called before the first frame update
 	void Start()
@@ -31,14 +34,17 @@ public class PlayerScript : MonoBehaviour
   // Update is called once per frame
 	void Update()
 	{
-		Move();
-		Look();
+		if(Dead == false)
+		{
+			Move();
+			Look();
+		}
 	}
 
     private void FixedUpdate() {
 		if (_attackQueued) {
-			Fire();
-		}
+				Fire();
+			}
     }
 
     //Moving
@@ -100,6 +106,18 @@ public class PlayerScript : MonoBehaviour
 		}
 	}
 
+	public void PlayerTakeDamage(float damage)
+	{
+		Health -= (int)damage;
+		
+		if(Health < 0)
+		{
+			Dead = true;
+			//stuff for game state dead
+			deathScreen.SetActive(true);
+		}
 
+
+	}
 
 }

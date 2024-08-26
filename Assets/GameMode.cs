@@ -45,10 +45,12 @@ public class GameMode : MonoBehaviour
 
     public void UpdatePlayerScore(float scoreIncrease) {
         Debug.Log($"Updated Player Score by {scoreIncrease}");
+        PlayerScore += scoreIncrease;
     }
 
     public void DealPlayerDamage(float damage) {
         Debug.Log($"Dealt {damage} damage to player");
+        Player.transform.GetComponent<PlayerScript>().PlayerTakeDamage(damage);
     }
 }
 
