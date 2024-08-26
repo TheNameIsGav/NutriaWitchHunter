@@ -13,10 +13,10 @@ public class RangedSingleEnemyController : MonoBehaviour
     public int RotateSpeed = 100;
     public int Range = 10;
     public int ProjectileSpeed = 1;
-    public float Damage => 10 * GameMode.GlobalDifficulty;
-    public float Health => 10 * GameMode.GlobalDifficulty;
+    public float Damage;
+    public float Health;
     public int ShotTimer = 2;
-    public float Value => 10 * GameMode.GlobalDifficulty;
+    public float Value;
 
     private void Awake() {
         gameObject.SetActive(false);
@@ -26,12 +26,16 @@ public class RangedSingleEnemyController : MonoBehaviour
     void Start()
     {
         if (player == null) { //Somehow we didn't get passed the player
-            player = GameMode.Player;
+            player = GameMode.GM.Player;
         }
 
         FindSpawnPosition();
 
         _rotationDirection = Random.value > .5f ? 1 : -1;
+
+        Damage = 10 * GameMode.GlobalDifficulty;
+        Health = 10 * GameMode.GlobalDifficulty;
+        Value = 10 * GameMode.GlobalDifficulty/2;
 
         InvokeRepeating("Shoot", 0, ShotTimer);
     }
@@ -114,10 +118,11 @@ public class RangedSingleEnemyController : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.gameObject.tag == "playerProjectile") {
-            //TODO Reduce Projectile Count of Object
-            //Reduce Health by X amount
-            if(Health <= 0) {
+        if (collision.gameObject.tag == "PlayerProjectile") {
+            collision.gameObject.GetComponent<ProjectileController>().RegisterHit();
+            Health -= collision.gameObject.GetComponent<ProjectileController>().Damage;
+
+            if (Health <= 0) {
                 GameMode.GM.UpdatePlayerScore(Value);
                 Destroy(gameObject);
             }

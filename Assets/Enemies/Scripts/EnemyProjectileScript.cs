@@ -13,7 +13,7 @@ public class EnemyProjectileScript : MonoBehaviour
 
     void Start() {
         Invoke("Destroy", Lifetime);
-        targetPoint = GameMode.Player.transform.position;
+        targetPoint = GameMode.GM.Player.transform.position;
         transform.rotation = Quaternion.LookRotation(targetPoint, Vector3.up);
     }
 
@@ -26,12 +26,13 @@ public class EnemyProjectileScript : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        if(collision.gameObject.name == GameMode.Player.name) {
+        if(collision.gameObject.name == GameMode.GM.Player.name) {
             GameMode.GM.DealPlayerDamage(Damage);
             Destroy(gameObject);
         }
 
-        if(collision.gameObject.tag == "playerProjectile") {
+        if(collision.gameObject.tag == "PlayerProjectile") {
+            collision.gameObject.GetComponent<ProjectileController>().RegisterHit();
             GameMode.GM.UpdatePlayerScore(Value);
             Destroy(gameObject);
         }

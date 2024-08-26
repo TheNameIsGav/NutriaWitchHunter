@@ -6,6 +6,7 @@ TagManager:
   tags:
   - GameMode
   - EnemyProjectile
+  - PlayerProjectile
   layers:
   - Default
   - TransparentFX

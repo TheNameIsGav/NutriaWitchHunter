@@ -11,9 +11,9 @@ public class MeleeSingleEnemyController : MonoBehaviour
     private Camera mainCamera => GameMode.MainCamera;
 
     public int MoveSpeed = 5;
-    public float Damage => 20 * GameMode.GlobalDifficulty;
-    public float Health => 40 * GameMode.GlobalDifficulty;
-    public float Value => 20 * GameMode.GlobalDifficulty/2;
+    public float Damage;
+    public float Health;
+    public float Value;
 
 
     private void Awake() {
@@ -24,8 +24,12 @@ public class MeleeSingleEnemyController : MonoBehaviour
     void Start()
     {
         if(player == null) { //Somehow we didn't get passed the player
-            player = GameMode.Player;
+            player = GameMode.GM.Player;
         }
+
+        Damage = 20 * GameMode.GlobalDifficulty;
+        Health = 40 * GameMode.GlobalDifficulty;
+        Value = 20 * GameMode.GlobalDifficulty/2;
 
         FindSpawnPosition();
     }
@@ -82,8 +86,9 @@ public class MeleeSingleEnemyController : MonoBehaviour
         }
         
         //We were hit by a player's projectile so should die or lose health. 
-        if(collision.gameObject.tag == "playerProjectile") {
-
+        if(collision.gameObject.tag == "PlayerProjectile") {
+            collision.gameObject.GetComponent<ProjectileController>().RegisterHit();
+            Health -= collision.gameObject.GetComponent<ProjectileController>().Damage;
             //Deal Damage to self based on projectile.
             if(Health <= 0) {
                 GameMode.GM.UpdatePlayerScore(Value);

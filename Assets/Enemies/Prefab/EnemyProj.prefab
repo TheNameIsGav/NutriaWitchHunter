@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 890373558643667653}
   - component: {fileID: 6532503632386613687}
   - component: {fileID: 4510075393008203171}
+  - component: {fileID: -306524178166449002}
   m_Layer: 0
   m_Name: EnemyProj
   m_TagString: EnemyProjectile
@@ -46,10 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b0b30224ef538b45a570a0f2fc234f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 10
   Speed: 10
   Lifetime: 5
-  Value: 5
 --- !u!212 &6532503632386613687
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -155,3 +154,30 @@ PolygonCollider2D:
       - {x: 0.25368592, y: -0.00060359016}
       - {x: 0.2521076, y: 0.18993297}
   m_UseDelaunayMesh: 0
+--- !u!50 &-306524178166449002
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1675906331798667472}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

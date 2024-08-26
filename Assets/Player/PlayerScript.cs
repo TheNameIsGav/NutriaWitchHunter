@@ -7,63 +7,88 @@ using UnityEngine.InputSystem;
 public class PlayerScript : MonoBehaviour
 {
 
-  public GameObject wand;
+	[SerializeField]
+	private GameObject wand;
 
-  public float speed = 1f;
-  private Vector2 moveDirection;
+	public GameObject Projectile;
 
+	[SerializeField]
+	private float _speed = 1f;
+	private Vector2 moveDirection;
 	private Vector2 lookDirection;
 
-
-
+	public int PierceCount = 1;
+	public int Damage = 10;
+	public int Health = 100;
+	public int AttackSpeed = 10;
 
 	// Start is called before the first frame update
 	void Start()
-  {
+	{
       
-  }
+	}
   
   // Update is called once per frame
-  void Update()
-  {
-    Move();
+	void Update()
+	{
+		Move();
 		Look();
 	}
 
+    private void FixedUpdate() {
+		if (_attackQueued) {
+			Fire();
+		}
+    }
 
+    //Moving
+    public void MoveInput(InputAction.CallbackContext context)
+	{
+		moveDirection = context.ReadValue<Vector2>();
+	}
 
-  //Moving
-	public void MoveInput(InputAction.CallbackContext context)
-  {
-		//Debug.Log("MoveInput Recieved:: X:" + context.ReadValue<Vector2>().x + " Y: " + context.ReadValue<Vector2>().y);
-    moveDirection = context.ReadValue<Vector2>();
-  }
+	private bool _attackQueued;
+	public void AttackInput(InputAction.CallbackContext context) {
+		if (context.action.WasPressedThisFrame()) {
+            _attackQueued = true;
+        }
 
-  public void Move()
-  {
+		if (context.action.WasReleasedThisFrame()) {
+			_attackQueued = false;
+		}
+		
+	}
+
+	public void Fire() {
+		var projectile = GameObject.Instantiate(Projectile);
+		projectile.transform.position = transform.position;
+		projectile.GetComponent<ProjectileController>().AssignTargetPoint(_mouseScreenPosition);
+	}
+
+	public void Move()
+	{
 		if(moveDirection != Vector2.zero)
 		{
-      //Debug.Log("MOVING:: X: " + moveDirection.x + " Y: " + moveDirection.y);
-		  Vector3 direction = new Vector3(moveDirection.x, moveDirection.y, 0).normalized;
-		  transform.position += direction * (speed * Time.deltaTime);
+			Vector3 direction = new Vector3(moveDirection.x, moveDirection.y, 0).normalized;
+			transform.position += direction * (_speed * Time.deltaTime);
 		}
 	}
 
 	//Looking
 	public void LookInput(InputAction.CallbackContext context)
 	{
-
-		Debug.Log("LookInput Recieved:: X:" + context.ReadValue<Vector2>().x + " Y: " + context.ReadValue<Vector2>().y);
 		lookDirection = context.ReadValue<Vector2>();
 	}
+
+	private Vector3 _mouseScreenPosition;
 
 	public void Look()
 	{
 		if(lookDirection != Vector2.zero)
 		{
-			Debug.Log("LOOKING:: X: " + lookDirection.x + " Y: " + lookDirection.y);
 
 			Vector3 mouseLocation = Camera.main.ScreenToWorldPoint(lookDirection);
+			_mouseScreenPosition = new Vector3(mouseLocation.x, mouseLocation.y);
 			mouseLocation.z = 0f;
 
 			Vector3 direction = mouseLocation - transform.position;

@@ -7,7 +7,8 @@ public class GameMode : MonoBehaviour
 
     public static GameState GameState = GameState.StartScreen;
     public static Camera MainCamera;
-    public static GameObject Player;
+    public GameObject Player;
+    public PlayerScript PlayerScript;
     public static GameMode GM; 
 
 
@@ -20,6 +21,7 @@ public class GameMode : MonoBehaviour
     private void Awake() {
         MainCamera = Camera.main;
         Player = GameObject.FindGameObjectWithTag("Player");
+        PlayerScript = Player.GetComponent<PlayerScript>();
         if(GM != null) {
             GameObject.Destroy(GM);
         } else {

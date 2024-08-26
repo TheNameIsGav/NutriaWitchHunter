@@ -25,6 +25,8 @@ public class EnemySpawner : MonoBehaviour
             playerObject = GameObject.FindGameObjectWithTag("Player");
         }
         DontDestroyOnLoad(this);
+
+        Invoke("SetActive", 3);
     }
 
     private Stack<GameObject> meleeWaitingPool = new Stack<GameObject>();
@@ -33,20 +35,26 @@ public class EnemySpawner : MonoBehaviour
     private Stack<GameObject> rangedWaitingPool = new Stack<GameObject>();
     private List<GameObject> rangedActivePool = new List<GameObject>();
 
+    private bool _isActive = false;
+    private void SetActive() {
+        _isActive = true;
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (meleeWaitingPool.Count <= 0) {
-            PopulateMeleeEnemies();
-        }
-        if (rangedWaitingPool.Count <= 0) {
-            PopulateRangedEnemies();
-        }
+        if (_isActive) {
+            if (meleeWaitingPool.Count <= 0) {
+                PopulateMeleeEnemies();
+            }
+            if (rangedWaitingPool.Count <= 0) {
+                PopulateRangedEnemies();
+            }
 
-        if ((rangedActivePool.Count + meleeActivePool.Count) < 15 || _timeSinceLastSpawn >= _spawnCooldownInSeconds) {
-            SpawnNewWave();
+            if ((rangedActivePool.Count + meleeActivePool.Count) < 15 || _timeSinceLastSpawn >= _spawnCooldownInSeconds) {
+                SpawnNewWave();
+            }
         }
-
     }
 
     [SerializeField]
